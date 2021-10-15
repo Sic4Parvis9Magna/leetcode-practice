@@ -34,24 +34,7 @@ The number of nodes in the tree is in the range [0, 100].
 Follow up: Recursive solution is trivial, could you do it iteratively?
 */
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 
 // TODO 1: add test cases from above
 // TODO 2: try non recursive approach
@@ -83,5 +66,24 @@ class BinaryTreePreorderTraversalJava {
         result.add(root.val);
         processNodes(root.left, result);
         processNodes(root.right, result);
+    }
+
+    private class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+    
+        TreeNode() {
+        }
+    
+        TreeNode(int val) {
+            this.val = val;
+        }
+    
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 }

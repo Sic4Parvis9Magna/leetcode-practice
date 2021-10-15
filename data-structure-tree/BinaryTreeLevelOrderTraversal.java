@@ -54,24 +54,6 @@ class BinaryTreeLevelOrderTraversalTest {
     List<Integer> input = new ArrayList<>();
 }
 
-class LeveledNode {
-    private TreeNode node;
-    private Integer level;
-
-    public LeveledNode(TreeNode node, Integer level) {
-        this.node = node;
-        this.level = level;
-    }
-
-    public TreeNode getNode() {
-        return this.node;
-    }
-
-    public Integer getLevel() {
-        return this.level;
-    }
-}
-
 class BinaryTreeLevelOrderTraversal {
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) {
@@ -111,5 +93,42 @@ class BinaryTreeLevelOrderTraversal {
         }
 
         return result;
+    }
+
+    private class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+    
+        TreeNode() {
+        }
+    
+        TreeNode(int val) {
+            this.val = val;
+        }
+    
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    private class LeveledNode {
+        private TreeNode node;
+        private Integer level;
+    
+        public LeveledNode(TreeNode node, Integer level) {
+            this.node = node;
+            this.level = level;
+        }
+    
+        public TreeNode getNode() {
+            return this.node;
+        }
+    
+        public Integer getLevel() {
+            return this.level;
+        }
     }
 }

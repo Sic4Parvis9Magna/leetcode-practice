@@ -34,24 +34,7 @@ Follow up: Recursive solution is trivial, could you do it iteratively?
 
 */
 
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    TreeNode() {
-    }
-
-    TreeNode(int val) {
-        this.val = val;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
 
 // TODO 1: add test cases from above
 // TODO 2: try non recursive approach
@@ -81,5 +64,24 @@ class BinaryTreePostorderTraversalJava {
         processNodes(root.left, result);
         processNodes(root.right, result);
         result.add(root.val);
+    }
+
+    private class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+    
+        TreeNode() {
+        }
+    
+        TreeNode(int val) {
+            this.val = val;
+        }
+    
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
     }
 }
