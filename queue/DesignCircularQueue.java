@@ -1,8 +1,5 @@
 package queue;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
 Design your implementation of the circular queue.
@@ -63,11 +60,11 @@ At most 3000 calls will be made to enQueue, deQueue, Front, Rear, isEmpty, and i
 
 
  // TODO add tests
- // TODO try to replace List with an array
+ // TODO try to replace List with an array (done)
 
 public class  DesignCircularQueue {
     public static void main(String[] args) {
-        System.out.println("hello from the tests!!!");
+        // System.out.println("hello from the tests!!!");
         // MyCircularQueue myCircularQueue = new MyCircularQueue(3);
         // System.out.println( myCircularQueue.enQueue(1)); // return True
         // System.out.println( myCircularQueue.enQueue(2)); // return True
@@ -80,30 +77,30 @@ public class  DesignCircularQueue {
         // System.out.println( myCircularQueue.Rear());     // return 4
 
         //test case 2
-        MyCircularQueue myCircularQueue = new MyCircularQueue(2);
-        System.out.println(myCircularQueue.enQueue(1));
-        System.out.println(myCircularQueue.enQueue(2));
-        System.out.println(myCircularQueue.deQueue());
-        System.out.println(myCircularQueue.enQueue(3));
-        System.out.println(myCircularQueue.deQueue());
-        System.out.println(myCircularQueue.enQueue(3));
-        System.out.println(myCircularQueue.deQueue());
-        System.out.println(myCircularQueue.Front());
+        // MyCircularQueue myCircularQueue = new MyCircularQueue(2);
+        // System.out.println(myCircularQueue.enQueue(1));
+        // System.out.println(myCircularQueue.enQueue(2));
+        // System.out.println(myCircularQueue.deQueue());
+        // System.out.println(myCircularQueue.enQueue(3));
+        // System.out.println(myCircularQueue.deQueue());
+        // System.out.println(myCircularQueue.enQueue(3));
+        // System.out.println(myCircularQueue.deQueue());
+        // System.out.println(myCircularQueue.Front());
     }
 }
 
 class MyCircularQueue {
 
-    private List<Integer> queue;
-    private int headIndex = -1;
-    private int tailIndex = 0;
-    private int itemsCount = 0;
+    private int[] queue;
+    private int headIndex;
+    private int tailIndex;
+    private int itemsCount;
 
     public MyCircularQueue(int k) {
-        queue = new ArrayList<>(k);
-        for (int i = 0; i < k; i++) {
-            queue.add(null);
-        }
+        queue = new int[k];
+        headIndex = -1;
+        tailIndex = 0;
+        itemsCount = 0;
     }
     
     public boolean enQueue(int value) {
@@ -111,8 +108,8 @@ class MyCircularQueue {
             return false;
         }
 
-        headIndex = (headIndex + 1) % queue.size();
-        queue.set(headIndex, value);
+        headIndex = (headIndex + 1) % queue.length;
+        queue[headIndex] = value;
         itemsCount++;
 
         return true;
@@ -123,8 +120,7 @@ class MyCircularQueue {
             return false;
         }
 
-        queue.set(tailIndex, null);
-        tailIndex = (tailIndex + 1) % queue.size();
+        tailIndex = (tailIndex + 1) % queue.length;
         itemsCount--;
 
         return true;
@@ -135,7 +131,7 @@ class MyCircularQueue {
             return -1;
         }
 
-        return queue.get(tailIndex);
+        return queue[tailIndex];
     }
     
     public int Rear() {
@@ -143,7 +139,7 @@ class MyCircularQueue {
             return -1;
         }
         
-        return queue.get(headIndex);
+        return queue[headIndex];
     }
     
     public boolean isEmpty() {
@@ -151,7 +147,7 @@ class MyCircularQueue {
     }
     
     public boolean isFull() {
-        return itemsCount == queue.size();
+        return itemsCount == queue.length;
     }
 }
 
