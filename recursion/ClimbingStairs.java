@@ -2,7 +2,6 @@ package recursion;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
 
 /*
 You are climbing a staircase. It takes n steps to reach the top.
