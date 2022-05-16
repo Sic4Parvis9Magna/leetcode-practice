@@ -28,6 +28,8 @@ Follow up: A linked list can be reversed either iteratively or recursively. Coul
 public class ReverseLinkedList {
     
     public static void main(String[] args) {
+
+        // TODO implement iterative solution
         Solution sol = new Solution();
         ListNode l1 = new ListNode(1);    
         ListNode l2 = new ListNode(2);    
@@ -69,15 +71,15 @@ class ListNode {
 
  class Solution {
     public ListNode reverseList(ListNode head) {
-        if (head.next == null) {
+        if (head == null || head.next == null) {
             return head;
         }
 
         ListNode nextNode = head.next;
-        head.next = null;
         ListNode nextHead = reverseList(nextNode);
-        nextHead.next = head;
+        nextNode.next = head;
+        head.next = null;
 
-        return nextNode;
+        return nextHead;
     }
 }
