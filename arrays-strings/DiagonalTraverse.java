@@ -34,9 +34,6 @@ public class DiagonalTraverse {
         test2();
         test3();
         test4();
-
-        // TODO cover me
-        // [[2,3,4],[5,6,7],[8,9,10],[11,12,13],[14,15,16]]
     }
 
     public static void test1() {
