@@ -87,7 +87,7 @@ class Solution {
         long left = 1;
         long right = x;
         while (left <= right) {
-            long nextValue = (left + right) / 2;
+            long nextValue = left + (right - left) / 2;
             long nextValuePowTwo = nextValue * nextValue;
             if (nextValuePowTwo == x) {
                 return (int) nextValue;
