@@ -37,7 +37,7 @@
  * -10^4 <= target <= 10^4
  * 
  * SearchInRotatedSortedArray
- * STATUS: COMPLETED WITH TODOS
+ * STATUS: COMPLETED
  */
 public class SearchInRotatedSortedArray {
 
@@ -50,6 +50,7 @@ public class SearchInRotatedSortedArray {
         test6();
         test7();
         test8();
+        test9();
     }
 
     public static void test1() {
@@ -171,44 +172,73 @@ public class SearchInRotatedSortedArray {
         System.out.println("Test#8");
         System.out.printf("Expected result is %d\n;Actual result is %d;\n\n", expectedResult, actualResult);
     }
+
+    public static void test9() {
+        // Given
+        Solution sol = new Solution();
+        int[] nums = new int[] { 3, 1 };
+        int target = 0;
+        int expectedResult = -1;
+
+        // When
+        int actualResult = sol.search(nums, target);
+
+        // Then
+        System.out.println("Test#9");
+        System.out.printf("Expected result is %d\n;Actual result is %d;\n\n", expectedResult, actualResult);
+    }
 }
 
 class Solution {
-    // todo rewrite to use only one binary seach based on idea that thre is sorted
-    // and unsorted parts
     public int search(int[] nums, int target) {
-        int shift = getLeft(nums);
         int left = 0;
         int right = nums.length - 1;
         while (left <= right) {
-            int readMid = (right + left) / 2;
-            int mid = (readMid + shift) % nums.length;
-            int midItem = nums[mid];
-            if (midItem == target) {
+            int mid = left + (right - left) / 2;
+            int midVal = nums[mid];
+            if (midVal == target) {
                 return mid;
-            } else if (midItem > target) {
-                right = readMid - 1;
-            } else {
-                left = readMid + 1;
             }
+
+            if (left == right) {
+                break;
+            }
+
+            if (midVal > nums[left] || mid == left) {
+                int res = binarySearch(nums, left, mid - 1, target);
+                if (res != -1) {
+                    return res;
+                }
+                left = mid + 1;
+            }
+
+            if (midVal < nums[right] || mid == right) {
+                int res = binarySearch(nums, mid + 1, right, target);
+                if (res != -1) {
+                    return res;
+                }
+                right = mid - 1;
+            }
+
         }
+
         return -1;
     }
 
-    // TODO rewrite to binary search
-    private int getLeft(int[] nums) {
-        if (nums.length < 2) {
-            return 0;
-        }
-
-        for (int i = 1; i < nums.length; i++) {
-            int prev = nums[i - 1];
-            int curr = nums[i];
-            if (curr < prev) {
-                return i;
+    private int binarySearch(int[] nums, int start, int end, int target) {
+        int left = start;
+        int right = end;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] == target) {
+                return mid;
+            } else if (nums[mid] > target) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
             }
         }
 
-        return 0;
+        return -1;
     }
 }
