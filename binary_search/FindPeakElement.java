@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A peak element is an element that is strictly greater than its neighbors.
  * 
@@ -35,86 +38,70 @@
  */
 public class FindPeakElement {
     public static void main(String[] args) {
-        test1();
-        test2();
-        test3();
-        test4();
+        runTests();
     }
 
-    public static void test1() {
-        // Given
+    public static void runTests() {
         Solution sol = new Solution();
-        int[] nums = new int[] { 1, 2, 3, 1 };
-        int expecterResult = 2;
+        List<Object[]> tests = new ArrayList<>() {
+            {
+                add(new Object[] { new int[] { 1, 2, 3, 1 }, 2 });
+                add(new Object[] { new int[] { 1, 2, 1, 3, 5, 6, 4 }, 5 });
+                add(new Object[] { new int[] { 1, 2, 1, 3, 5, 6, 4 }, 5 });
+                add(new Object[] { new int[] { 3, 2, 1 }, 0 });
+                add(new Object[] { new int[] { 4, 3, 2, 1 }, 0 });
+            }
+        };
+        int counter = 0;
+        for (Object[] test : tests) {
+            // Given
+            int[] nums = (int[]) test[0];
+            int expecterResult = (int) test[1];
 
-        // When
-        int actualResult = sol.findPeakElement(nums);
+            // When
+            int actualResult = sol.findPeakElement(nums);
 
-        // Then
-        System.out.println("Test#1");
-        System.out.printf("Expected result is %d;\nActual result is %d;\n\n", expecterResult, actualResult);
-
-    }
-
-    public static void test2() {
-        // Given
-        Solution sol = new Solution();
-        int[] nums = new int[] { 1, 2, 1, 3, 5, 6, 4 };
-        int expecterResult = 5;
-
-        // When
-        int actualResult = sol.findPeakElement(nums);
-
-        // Then
-        System.out.println("Test#2");
-        System.out.printf("Expected result is %d;\nActual result is %d;\n\n", expecterResult, actualResult);
-
-    }
-
-    public static void test3() {
-        // Given
-        Solution sol = new Solution();
-        int[] nums = new int[] { 3, 2, 1 };
-        int expecterResult = 0;
-
-        // When
-        int actualResult = sol.findPeakElement(nums);
-
-        // Then
-        System.out.println("Test#3");
-        System.out.printf("Expected result is %d;\nActual result is %d;\n\n", expecterResult, actualResult);
-
-    }
-
-    public static void test4() {
-        // Given
-        Solution sol = new Solution();
-        int[] nums = new int[] { 4, 3, 2, 1 };
-        int expecterResult = 0;
-
-        // When
-        int actualResult = sol.findPeakElement(nums);
-
-        // Then
-        System.out.println("Test#4");
-        System.out.printf("Expected result is %d;\nActual result is %d;\n\n", expecterResult, actualResult);
-
+            // Then
+            System.out.println("Test#" + ++counter);
+            System.out.printf("Expected result is %d;\nActual result is %d;\n\n", expecterResult, actualResult);
+        }
     }
 }
 
 class Solution {
 
+    /**
+     * Use of the 2nd template
+     */
     public int findPeakElement(int[] nums) {
         int left = 0;
         int right = nums.length - 1;
         while (left < right) {
             int mid = left + (right - left) / 2;
-            if (nums[mid] > nums[mid + 1])
+            if (nums[mid] > nums[mid + 1]) {
                 right = mid;
-            else
+            } else {
                 left = mid + 1;
+            }
         }
         return left;
+    }
+
+    /**
+     * Use of the 3rd template
+     */
+    public int findPeakElement3(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+        while (left + 1 < right) {
+            int mid = left + (right - left) / 2;
+            if (nums[mid] > nums[mid + 1]) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        return nums[left] > nums[right] ? left : right;
     }
 
     public int findPeakElement2(int[] nums) {
