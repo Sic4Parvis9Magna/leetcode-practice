@@ -55,6 +55,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
         tests.add(new Object[] { "dvdf", 3 });
         tests.add(new Object[] { "bbbbb", 1 });
         tests.add(new Object[] { "pwwkew", 3 });
+        tests.add(new Object[] { "PWWKEW", 3 });
         int counter = 0;
         for (Object[] test : tests) {
             // Given
@@ -73,17 +74,21 @@ public class LongestSubstringWithoutRepeatingCharacters {
 
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        Map<Character, Integer> currentChars = new HashMap();
+        int[] charMap = new int[128];
+        for (int i = 0; i < charMap.length; i++) {
+            charMap[i] = -1;
+        }
         int longest = 0;
         int startIndex = 0;
         for (int i = 0; i < s.length(); i++) {
             char nextChar = s.charAt(i);
-            if (isDuplicate(startIndex, currentChars.get(nextChar))) {
+            int nextCharIndex = (int) nextChar;
+            if (isDuplicate(startIndex, charMap, nextCharIndex)) {
                 int curentSize = i - startIndex;
                 longest = curentSize > longest ? curentSize : longest;
-                startIndex = currentChars.get(nextChar) + 1;
+                startIndex = charMap[nextCharIndex] + 1;
             }
-            currentChars.put(nextChar, i);
+            charMap[nextCharIndex] = i;
         }
 
         int curentSize = s.length() - startIndex;
@@ -92,10 +97,9 @@ class Solution {
         return longest;
     }
 
-    private boolean isDuplicate(int startPosition, Integer lastPosition) {
-        if (lastPosition == null) {
-            return false;
-        }
-        return lastPosition >= startPosition;
+    private boolean isDuplicate(int startPosition, int[] map, int charIndex) {
+        int lastIndex = map[charIndex];
+
+        return (lastIndex != -1) && (lastIndex >= startPosition);
     }
 }
