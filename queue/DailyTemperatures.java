@@ -1,8 +1,10 @@
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Given an array of integers temperatures represents the daily temperatures,
@@ -13,12 +15,12 @@ import java.util.List;
  * Example 1:
  * Input: temperatures = [73,74,75,71,69,72,76,73]
  * Output: [1,1,4,2,1,1,0,0]
- * Example 2:
  * 
+ * Example 2:
  * Input: temperatures = [30,40,50,60]
  * Output: [1,1,1,0]
- * Example 3:
  * 
+ * Example 3:
  * Input: temperatures = [30,60,90]
  * Output: [1,1,0]
  * 
@@ -29,6 +31,9 @@ import java.util.List;
  * 30 <= temperatures[i] <= 100
  * 
  * DailyTemperatures
+ * 
+ * STASUS: COMPLETED
+ * 
  */
 public class DailyTemperatures {
     public static void main(String[] args) {
@@ -61,62 +66,33 @@ public class DailyTemperatures {
 }
 
 class Solution {
+
+    /**
+     * Monotonic stack solution
+     * In time O(n) as we walk over the items twice
+     * In memory O(n) as we store items in stack
+     * 
+     * @param temperatures
+     * @return
+     */
     public int[] dailyTemperatures(int[] temperatures) {
         int[] result = new int[temperatures.length];
-        if (temperatures.length == 0) {
-            return result;
-        }
-        int target = temperatures[0];
-        Deque<Integer> stack = intitStack(temperatures, target);
-        for (int i = 0; i < result.length; i++) {
-            int nextresult = getResultFor(i, temperatures, stack);
-            result[i] = nextresult;
-        }
-        return result;
-    }
-
-    private Deque<Integer> intitStack(int[] temperature, int target) {
-        Deque<Integer> result = new LinkedList<>();
-        for (int i = temperature.length - 1; i >= 0; i--) {
-            int nextVal = temperature[i];
-            if (nextVal > target) {
-                result.push(i);
-            }
-        }
-        return result;
-    }
-
-    private int getResultFor(int targetIndex, int[] temperatures, Deque<Integer> stack) {
-        while (!stack.isEmpty()) {
-            int nextIndex = stack.peek();
-            if (temperatures[nextIndex] > temperatures[targetIndex]) {
-                return nextIndex - targetIndex;
-            }
-
-            stack.poll();
-        }
-        return 0;
-    }
-
-    public int[] dailyTemperatures2(int[] temperatures) {
-        int[] result = new int[temperatures.length];
+        Deque<Integer> stack = new ArrayDeque<>();
         for (int i = 0; i < temperatures.length; i++) {
-            int index = findNextHotter(i, temperatures);
-            if (index != -1) {
-                result[i] = index - i;
+            if (stack.isEmpty()) {
+                stack.push(i);
+                continue;
             }
-        }
-        return result;
-    }
 
-    private int findNextHotter(int target, int[] temperatures) {
-        int result = -1;
-        int base = temperatures[target];
-
-        for (int i = target + 1; i < temperatures.length; i++) {
-            if (temperatures[i] > base) {
-                return i;
+            while (!stack.isEmpty()) {
+                int nextIndex = stack.peek();
+                if (temperatures[nextIndex] >= temperatures[i]) {
+                    break;
+                }
+                stack.poll();
+                result[nextIndex] = i - nextIndex;
             }
+            stack.push(i);
         }
 
         return result;
