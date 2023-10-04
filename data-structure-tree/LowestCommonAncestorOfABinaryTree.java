@@ -46,6 +46,7 @@ import java.util.Queue;
 public class LowestCommonAncestorOfABinaryTree {
     // TODO implement tests
     // TODO implement better approach
+    // see here https://en.wikipedia.org/wiki/Lowest_common_ancestor
 }
 
 /**
