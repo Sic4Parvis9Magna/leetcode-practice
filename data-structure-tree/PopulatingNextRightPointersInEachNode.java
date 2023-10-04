@@ -1,3 +1,4 @@
+import java.util.ArrayDeque;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -48,9 +49,12 @@ import java.util.Queue;
  * count as extra space for this problem.
  * 
  * PopulatingNextRightPointersInEachNode
+ * 
+ * STATUS: COMPLETED
+ * 
  */
 public class PopulatingNextRightPointersInEachNode {
-
+    // TODO implement tests
 }
 
 /*
@@ -78,39 +82,39 @@ class Node {
 };
 
 class Solution {
+    /**
+     * BFS
+     * If 'n' is the height of the tree
+     * In time O(2^n) as we need to walk over all the nodes
+     * In memory O(2^n) as we store in queue all the nodes
+     * 
+     * @param root
+     * @return
+     */
     public Node connect(Node root) {
         if (root == null) {
             return root;
         }
-
-        Queue<Node> queue = new LinkedList<>();
-        uploadTree(queue, root);
-        int numberOfItems = 1;
-        int levelMultiplier = 1;
+        Queue<Node> queue = new ArrayDeque<>();
+        queue.offer(root);
         while (!queue.isEmpty()) {
-            numberOfItems = numberOfItems * levelMultiplier;
-            Node prevNode = null;
-            for (int i = 0; i < numberOfItems; i++) {
-                Node nextNode = queue.poll();
-                if (prevNode == null) {
-                    prevNode = nextNode;
-                    continue;
+            int layerSize = queue.size();
+            Node previousNode = null;
+            for (int i = 0; i < layerSize; i++) {
+                Node currentNode = queue.poll();
+                if (previousNode != null) {
+                    previousNode.next = currentNode;
                 }
-                prevNode.next = nextNode;
+                previousNode = currentNode;
+                if (currentNode.left != null) {
+                    queue.offer(currentNode.left);
+                }
+                if (currentNode.right != null) {
+                    queue.offer(currentNode.right);
+                }
             }
-            levelMultiplier *= 2;
         }
 
         return root;
     }
-
-    private void uploadTree(Queue queue, Node head) {
-        if (head == null) {
-            return;
-        }
-        queue.add(head);
-        uploadTree(queue, head.left);
-        uploadTree(queue, head.right);
-    }
-
 }
