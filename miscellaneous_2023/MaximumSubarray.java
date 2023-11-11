@@ -63,6 +63,8 @@ public class MaximumSubarray {
 }
 
 class Solution {
+    // todo try to implement divide and conquer approach
+
     /**
      * https://en.wikipedia.org/wiki/Maximum_subarray_problem
      * Kadane's algorithm
