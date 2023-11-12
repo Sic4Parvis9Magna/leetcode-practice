@@ -2,12 +2,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 
 /**
  * Given an integer array nums, return all the triplets [nums[i], nums[j],
@@ -41,13 +43,11 @@ import java.util.Collection;
  * Constraints:
  * 
  * 3 <= nums.length <= 3000
- * -10^5 <= nums[i] <= 10^5
+ * -10e+5 <= nums[i] <= 10e+5
  * 
  * 3Sum
  * 
- * Status : incompleted
- * 
- * 
+ * STATUS : COMPLETED
  * 
  */
 public class ThreeSum {
@@ -58,7 +58,17 @@ public class ThreeSum {
 
     public static void runTests() {
         List<Object[]> tests = new ArrayList<>();
-        tests.add(new Object[] { new int[] { -1, 0, 1, 2, -1, -4 }, new int[][] { { -1, -1, 2 }, { -1, 0, 1 } } });
+        tests.add(new Object[] { new int[] { -2, 0, 1, 1, 2 },
+                new int[][] { { -2, 0, 2 }, { -2, 1, 1 } } });
+        tests.add(new Object[] { new int[] { 0, 3, 0, 1, 1, -1, -5, -5, 3, -3, -3, 0
+        },
+                new int[][] { { -3, 0, 3 }, { -1, 0, 1 }, { 0, 0, 0 } } });
+        tests.add(new Object[] { new int[] { -1, 0, 1, 2, -1, -4 }, new int[][] { {
+                -1, -1, 2 }, { -1, 0, 1 } } });
+        tests.add(new Object[] { new int[] { -4, -2, 1, -5, -4, -4, 4, -2, 0, 4, 0,
+                -2, 3, 1, -5, 0 },
+                new int[][] { { -5, 1, 4 }, { -4, 0, 4 }, { -4, 1, 3 }, { -2, -2, 4 }, { -2,
+                        1, 1 }, { 0, 0, 0 } } });
         int counter = 0;
         Solution sol = new Solution();
         for (Object[] test : tests) {
@@ -80,58 +90,46 @@ public class ThreeSum {
 }
 
 class Solution {
-    // TODO solution is too slow on high numbers find out how to cut options
+    /**
+     * sorting + two pointers
+     * In time O(nlogn) + O(n^2) -> O(n^2)
+     * O(nlogn) - sorting; O(n^2) - search
+     */
     public List<List<Integer>> threeSum(int[] nums) {
-        Set<List<Integer>> resultIds = new HashSet<>();
-        Queue<Object[]> queue = new LinkedList<>();
-        queue.add(new Object[] { new ArrayList<>(), nums });
-        while (!queue.isEmpty()) {
-            Object[] nextItem = queue.poll();
-            List<Integer> nextList = (List<Integer>) nextItem[0];
-            int[] nextNumbers = (int[]) nextItem[1];
-            if (nextList.size() == 3) {
-                int listSum = getSum(nextList);
-                if (listSum == 0) {
-                    resultIds.add(nextList);
+        List<List<Integer>> results = new ArrayList();
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 2; i++) {
+            if (nums[i] > 0) {
+                break;
+            }
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            int left = i + 1;
+            int right = nums.length - 1;
+            while (left < right) {
+                int sum = nums[left] + nums[right];
+                int total = sum + nums[i];
+                if (total == 0) {
+                    List<Integer> result = List.of(nums[i], nums[left], nums[right]);
+                    results.add(result);
+                    while (left < right && nums[right] == nums[right - 1]) {
+                        right--;
+                    }
+                    while (left < right && nums[left] == nums[left + 1]) {
+                        left++;
+                    }
+                    left++;
+                    right--;
+                    continue;
+                } else if (total > 0) {
+                    right--;
+                } else {
+                    left++;
                 }
             }
-            for (int i = 0; i < nextNumbers.length; i++) {
-                List<Integer> nextListCopy = new ArrayList<>(nextList);
-                nextListCopy.add(nextNumbers[i]);
-                int[] nextNumbersCopy = new int[nextNumbers.length - (i + 1)];
-                for (int j = i + 1, k = 0; j < nextNumbers.length; j++, k++) {
-                    nextNumbersCopy[k] = nextNumbers[j];
-                }
-                queue.add(new Object[] { nextListCopy, nextNumbersCopy });
-            }
         }
 
-        List<List<Integer>> deduplicated = deuplicate(resultIds);
-        return deduplicated;
-    }
-
-    private int getSum(List<Integer> integers) {
-        return integers.stream()
-                .reduce(0, (a, b) -> a + b);
-    }
-
-    List<List<Integer>> deuplicate(Set<List<Integer>> rSet) {
-        List<List<Integer>> result = new ArrayList<>();
-        for (List<Integer> answer : rSet) {
-            if (!hasDuplicate(result, answer)) {
-                result.add(answer);
-            }
-        }
-        return result;
-    }
-
-    private boolean hasDuplicate(List<List<Integer>> answers, List<Integer> nextAnwer) {
-        for (List<Integer> answer : answers) {
-            if (answer.containsAll(nextAnwer)) {
-                return true;
-            }
-        }
-
-        return false;
+        return results;
     }
 }
