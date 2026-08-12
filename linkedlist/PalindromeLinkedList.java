@@ -1,6 +1,11 @@
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * PalindromeLinkedList
- * Given the head of a singly linked list, return true if it is a palindrome.
+ * Given the head of a singly linked list, return true if it is a palindrome or
+ * false otherwise.
  * 
  * Example 1:
  * Input: head = [1,2,2,1]
@@ -17,40 +22,42 @@
  * 
  * 
  * Follow up: Could you do it in O(n) time and O(1) space?
+ * 
+ * PalindromeLinkedList
+ * 
+ * STATUS: COMPLETED
+ * 
  */
 public class PalindromeLinkedList {
-
     public static void main(String[] args) {
-        test1();
-        test2();
+        runTests();
     }
 
-    public static void test1() {
-        // given
-        PalindromeLinkedListSolution sol = new PalindromeLinkedListSolution();
-        ListNode head = new ListNode(new int[] { 1, 2, 2, 1 });
+    public static void runTests() {
+        Solution sol = new Solution();
+        List<Object[]> tests = new ArrayList<>();
+        tests.add(new Object[] { new int[] { 1, 2, 2, 1 }, true });
+        tests.add(new Object[] { new int[] { 1, 2 }, false });
+        int counter = 0;
+        for (Object[] test : tests) {
+            // Given
+            int[] arr = (int[]) test[0];
+            ListNode head = new ListNode(arr);
+            boolean expectedResult = (boolean) test[1];
 
-        // when
-        boolean result = sol.isPalindrome(head);
+            // When
+            boolean actualResult = sol.isPalindrome(head);
 
-        // then
-        System.out.println(result); // expected true
+            // Then
+            System.out.println("Test#" + ++counter);
+            System.out.printf("Expected result is %b;\nActual result is %b;\n\n", expectedResult, actualResult);
+        }
     }
-
-    public static void test2() {
-        // given
-        PalindromeLinkedListSolution sol = new PalindromeLinkedListSolution();
-        ListNode head = new ListNode(new int[] { 1, 2 });
-
-        // when
-        boolean result = sol.isPalindrome(head);
-
-        // then
-        System.out.println(result); // expected false
-    }
-
 }
 
+/**
+ * Definition for singly-linked list.
+ */
 class ListNode {
     int val;
     ListNode next;
@@ -91,17 +98,73 @@ class ListNode {
     }
 }
 
-class PalindromeLinkedListSolution {
+class Solution {
     public boolean isPalindrome(ListNode head) {
-        if (head == null || head.next == null) {
+        if (head == null) {
             return false;
         }
+        int nodeCount = countNodes(head);
+        if (nodeCount == 1) {
+            return true;
+        }
+        int secondPartIndex = nodeCount % 2 == 0 ? nodeCount / 2 + 1 : nodeCount / 2 + 2;
+        ListNode secondHead = getNode(head, secondPartIndex);
+        ListNode revertedHalth = revertLinkedList(secondHead);
+        ListNode leftNode = head;
+        ListNode rightNode = revertedHalth;
+        for (int i = 0; i < nodeCount / 2; i++) {
+            if (leftNode.val != rightNode.val) {
+                return false;
+            }
+            leftNode = leftNode.next;
+            rightNode = rightNode.next;
+        }
 
-        int listLenght = getLength(head);
-        int secondHeadIndex = 0;
-        ListNode secondHead = getNode(secondHeadIndex);
-        ListNode reversedSecondHead = reverseList(secondHead);
+        return true;
+    }
 
-        return checkFirstIems(head, reversedSecondHead, listLenght / 2);
+    private int countNodes(ListNode head) {
+        int count = 0;
+        ListNode currentNode = head;
+        while (currentNode != null) {
+            count++;
+            currentNode = currentNode.next;
+        }
+
+        return count;
+    }
+
+    private ListNode getNode(ListNode head, int position) {
+        if (head == null || position < 1) {
+            return null;
+        }
+
+        ListNode currentNode = head;
+        int counter = position - 1;
+        while (counter > 0) {
+            currentNode = currentNode.next;
+            counter--;
+        }
+
+        return currentNode;
+    }
+
+    private ListNode revertLinkedList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        ListNode currHead = head;
+        ListNode nextNode = head.next;
+
+        while (nextNode != null) {
+            ListNode nodeAfterNext = nextNode.next;
+            head.next = nodeAfterNext;
+            nextNode.next = currHead;
+            currHead = nextNode;
+            nextNode = nodeAfterNext;
+        }
+
+        return currHead;
     }
 }
