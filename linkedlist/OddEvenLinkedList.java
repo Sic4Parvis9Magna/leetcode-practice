@@ -26,6 +26,11 @@ import java.util.List;
  * 
  * The number of nodes in the linked list is in the range [0, 104].
  * -106 <= Node.val <= 106
+ *  * 
+ * OddEvenLinkedList
+ * 
+ * STATUS: COMPLETED
+ * 
  */
 public class OddEvenLinkedList {
 

@@ -24,6 +24,8 @@
  * 
  * Follow up: A linked list can be reversed either iteratively or recursively.
  * Could you implement both?
+ * 
+ * STATUS: COMPLETED
  */
 public class ReverseLinkedList {
 

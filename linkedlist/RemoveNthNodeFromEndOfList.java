@@ -24,6 +24,8 @@
  * 1 <= n <= sz
  * 
  * Follow up: Could you do this in one pass?
+ * 
+ * STATUS: COMPLETED
  */
 
 // TODO [improvement] refator to single iteration through the list
