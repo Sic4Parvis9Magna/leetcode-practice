@@ -1,8 +1,9 @@
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * PalindromeLinkedList
  * Given the head of a singly linked list, return true if it is a palindrome or
  * false otherwise.
  * 
@@ -41,7 +42,7 @@ public class PalindromeLinkedList {
         for (Object[] test : tests) {
             // Given
             int[] arr = (int[]) test[0];
-            ListNode head = ListNode.from(arr);
+            ListNode head = new ListNode(arr);
             boolean expectedResult = (boolean) test[1];
 
             // When
@@ -73,19 +74,27 @@ class ListNode {
         this.next = next;
     }
 
-    public static ListNode from(int[] arr) {
-        if (arr.length == 0) {
-            return null;
+    ListNode(int[] array) {
+        if (array.length == 0) {
+            throw new RuntimeException("Cannot init list with 0 items");
         }
-        ListNode head = new ListNode(arr[0]);
-        ListNode currentTail = head;
-        for (int i = 1; i < arr.length; i++) {
-            ListNode nextTail = new ListNode(arr[i]);
-            currentTail.next = nextTail;
-            currentTail = nextTail;
+        this.val = array[0];
+        ListNode currentNode = this;
+        for (int i = 1; i < array.length; i++) {
+            ListNode nextNode = new ListNode(array[i]);
+            currentNode.next = nextNode;
+            currentNode = nextNode;
         }
+    }
 
-        return head;
+    public void print() {
+        System.out.print("[ ");
+        ListNode currentNode = this;
+        while (currentNode != null) {
+            System.out.print(currentNode.val + ", ");
+            currentNode = currentNode.next;
+        }
+        System.out.println(" ]");
     }
 }
 

@@ -1,3 +1,5 @@
+package arrays;
+
 public class ValidMountainArray {
     public static void main(String[] args) {
         ValidMountainArraySolution sol = new ValidMountainArraySolution();
