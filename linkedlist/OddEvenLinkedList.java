@@ -1,4 +1,7 @@
+import java.util.List;
+
 /**
+ * OddEvenLinkedList
  * Given the head of a singly linked list, group all the nodes with odd indices
  * together followed by the nodes with even indices, and return the reordered
  * list.
@@ -23,7 +26,7 @@
  * 
  * The number of nodes in the linked list is in the range [0, 104].
  * -106 <= Node.val <= 106
- * 
+ *  * 
  * OddEvenLinkedList
  * 
  * STATUS: COMPLETED
@@ -31,11 +34,40 @@
  */
 public class OddEvenLinkedList {
 
+    public static void main(String[] args) {
+
+        test1();
+        test2();
+    }
+
+    public static void test1() {
+        // given
+        int[] array = new int[] { 1, 2, 3, 4, 5 };
+        ListNode node = new ListNode(array);
+        OddEvenLinkedListSolution sol = new OddEvenLinkedListSolution();
+
+        // when
+        ListNode result = sol.oddEvenList(node);
+
+        // then
+        result.print(); // expected [1,3,5,2,4]
+    }
+
+    public static void test2() {
+        // given
+        int[] array = new int[] { 2, 1, 3, 5, 6, 4, 7 };
+        ListNode node = new ListNode(array);
+        OddEvenLinkedListSolution sol = new OddEvenLinkedListSolution();
+
+        // when
+        ListNode result = sol.oddEvenList(node);
+
+        // then
+        result.print(); // expected [2,3,6,7,1,5,4]
+    }
+
 }
 
-/**
- * Definition for singly-linked list.
- */
 class ListNode {
     int val;
     ListNode next;
@@ -51,9 +83,29 @@ class ListNode {
         this.val = val;
         this.next = next;
     }
+
+    ListNode(int[] array) {
+        this.val = array[0];
+        ListNode currentNode = this;
+        for (int i = 1; i < array.length; i++) {
+            ListNode nextNode = new ListNode(array[i]);
+            currentNode.next = nextNode;
+            currentNode = nextNode;
+        }
+    }
+
+    public void print() {
+        System.out.print("[ ");
+        ListNode currentNode = this;
+        while (currentNode != null) {
+            System.out.print(currentNode.val + ", ");
+            currentNode = currentNode.next;
+        }
+        System.out.println(" ]");
+    }
 }
 
-class Solution {
+class OddEvenLinkedListSolution {
     public ListNode oddEvenList(ListNode head) {
         if (head == null) {
             return head;

@@ -1,4 +1,6 @@
 /**
+ * RemoveNthNodeFromEndOfList
+ * 
  * Given the head of a linked list, remove the nth node from the end of the list
  * and return its head.
  * 
@@ -14,7 +16,6 @@
  * Input: head = [1,2], n = 1
  * Output: [1]
  * 
- * 
  * Constraints:
  * 
  * The number of nodes in the list is sz.
@@ -22,26 +23,55 @@
  * 0 <= Node.val <= 100
  * 1 <= n <= sz
  * 
- * 
  * Follow up: Could you do this in one pass?
- * 
- * RemoveNthNodeFromEndOfList
  * 
  * STATUS: COMPLETED
  */
+
+// TODO [improvement] refator to single iteration through the list
 public class RemoveNthNodeFromEndOfList {
+
     public static void main(String[] args) {
-        runTests();
+        test1();
+        System.out.println();
+        test2();
     }
 
-    public static void runTests() {
-        // TODO implement tests
+    public static void test1() {
+        // given
+        Solution sol = new Solution();
+        ListNode head = new ListNode(1);
+        ListNode n2 = new ListNode(2);
+        ListNode n3 = new ListNode(3);
+        ListNode n4 = new ListNode(4);
+        ListNode n5 = new ListNode(5);
+        head.next = n2;
+        n2.next = n3;
+        n3.next = n4;
+        n4.next = n5;
+
+        // when
+        ListNode result = sol.removeNthFromEnd(head, 2);
+
+        // then
+        result.print(); // result is [1,2,3,5]
+    }
+
+    public static void test2() {
+        // given
+        Solution sol = new Solution();
+        ListNode head = new ListNode(1);
+        ListNode n2 = new ListNode(2);
+        head.next = n2;
+
+        // when
+        ListNode result = sol.removeNthFromEnd(head, 2);
+
+        // then
+        result.print(); // result is [2]
     }
 }
 
-/**
- * Definition for singly-linked list.
- */
 class ListNode {
     int val;
     ListNode next;
@@ -57,10 +87,25 @@ class ListNode {
         this.val = val;
         this.next = next;
     }
+
+    public String toString() {
+        return String.valueOf(val);
+    }
+
+    public void print() {
+        System.out.print("[ ");
+        ListNode curNode = this;
+
+        while (curNode != null) {
+            System.out.print(curNode.val + " ");
+            curNode = curNode.next;
+        }
+
+        System.out.print(" ]");
+    }
 }
 
 class Solution {
-    // TODO try to implement single pass solution
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode nodeToRemove = findNthNodeFromEnd(head, n);
 
